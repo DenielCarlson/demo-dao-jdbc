@@ -14,6 +14,7 @@ public class DataBase {
 	
 	private static Connection conn = null;
 	
+	//Método que cria um conexão com o Banco de Dados
 	public static Connection getConnection() {
 		if(conn == null) {
 			
@@ -32,6 +33,7 @@ public class DataBase {
 	}
 	
 	
+	//Método que fecha a conexão com o Banco de Dados se ela existir
 	public static void closeConnection() {
 		if(conn != null) {
 			
@@ -44,6 +46,7 @@ public class DataBase {
 		}
 	}
 	
+	//Método que carrega e retorna as propriedas do arquivo db.properties
 	private static Properties loadProperties() {
 		
 		try {
@@ -58,6 +61,7 @@ public class DataBase {
 		}
 	}
 	
+	//Método que fecha um Statement se ele for != null
 	public static void closeStatement(Statement stt) {
 		if(stt != null) {
 			try {
@@ -69,6 +73,7 @@ public class DataBase {
 		}
 	}
 	
+	//Método que fecha um ResultSet se ele for != null
 	public static void closeResultSet(ResultSet rs) {
 		if(rs != null) {
 			try {
