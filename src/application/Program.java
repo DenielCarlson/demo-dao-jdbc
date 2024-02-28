@@ -1,7 +1,6 @@
 package application;
 
-import java.sql.Connection;
-import java.util.Date;
+import java.util.List;
 
 import db.DataBase;
 import model.dao.DaoFactory;
@@ -18,6 +17,12 @@ public class Program {
 		Seller seller = sellerDao.findById(7);
 		
 		System.out.println(seller);
+		
+		List<Seller> sellers = sellerDao.findByDepartment(new Department(3, null));
+		
+		for(Seller s : sellers) {
+			System.out.println(s);
+		}
 		
 		DataBase.closeConnection();
 
