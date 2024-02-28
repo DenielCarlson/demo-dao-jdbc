@@ -13,17 +13,11 @@ public class Program {
 
 	public static void main(String[] args) {
 		
-		Connection conn = DataBase.getConnection();
-			
-		Department department01 = new Department(1, "Eletronics");
-		
-		Seller seller = new Seller(31, "bob", "bob@gmail.com", new Date(), 3000.00f, department01);
-		
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
-		Seller seller1 = sellerDao.findById(4);
+		Seller seller = sellerDao.findById(7);
 		
-		System.out.println(seller1);
+		System.out.println(seller);
 		
 		DataBase.closeConnection();
 
