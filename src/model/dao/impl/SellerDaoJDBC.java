@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +41,9 @@ public class SellerDaoJDBC implements SellerDao{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
+	// Busca um Seller no banco de dados pelo parametro do tipo Integer e retorna o Seller que possui esse Id
 	@Override
 	public Seller findById(Integer id) {
 		PreparedStatement st = null;
@@ -77,6 +80,8 @@ public class SellerDaoJDBC implements SellerDao{
 		}
 	}
 	
+	
+	//Busca um Seller no Banco de dados pelo parametro de um objeto do tipo Department e retorna uma lista do Sellers encontrados
 	@Override
 	public List<Seller> findByDepartment(Department department){
 		
@@ -90,8 +95,8 @@ public class SellerDaoJDBC implements SellerDao{
 			
 			ps = conn.prepareStatement("SELECT seller.*, department.Name AS DepName FROM seller "
 					+ "JOIN department ON seller.DepartmentId = department.Id "
-					+ "WHERE seller.DepartmentId = ? "
-					+ "ORDER BY Name ASC");
+					+ "Where department.Id = ? "
+					+ "ORDER BY seller.Name ASC");
 			
 			ps.setInt(1, department.getId());
 			
@@ -125,13 +130,54 @@ public class SellerDaoJDBC implements SellerDao{
 		
 		return sellerList;
 	}
-
+	
+	//Busca todos os Sellers no banco de dados e retorna uma Lista destes
 	@Override
 	public List<Seller> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		Statement ps = null;
+		ResultSet rs = null;
+		
+		List<Seller> sellerList = new ArrayList<Seller>();
+		Map<Integer, Department> map = new HashMap<Integer, Department>();
+		
+		try {
+			
+			ps = conn.createStatement();
+			
+			rs = ps.executeQuery("SELECT seller.*, department.Name AS DepName FROM seller "
+					+ "JOIN department ON seller.DepartmentId = department.Id "
+					+ "ORDER BY seller.Name ASC");
+			
+			while(rs.next()) {
+				
+				Department dep = map.get(rs.getInt("DepartmentId"));
+				
+				if(map.get(rs.getObject("DepartmentId")) == null) {
+					
+					dep = this.instatiateDepartment(rs);
+					
+					map.put(dep.getId(), dep);
+				}
+				
+				Seller seller = this.instantiateSeller(rs, dep);
+				
+				sellerList.add(seller);
+			}
+			
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage()); 
+		}
+		finally {
+			DataBase.closeStatement(ps);
+			DataBase.closeResultSet(rs);
+			
+		}
+		
+		return sellerList;
 	}
 	
+	//Responsável por intanciar um objeto do tipo Department recebendo um ResultSet de parametro 
 	private Department instatiateDepartment(ResultSet rs) throws SQLException{
 		
 		Department department = new Department();
@@ -141,6 +187,7 @@ public class SellerDaoJDBC implements SellerDao{
 		return department;
 	}
 	
+	//Responsável por intanciar um objeto do tipo Seller recebendo um ResultSet de paramentro
 	private Seller instantiateSeller(ResultSet rs, Department department) throws SQLException{
 	
 		Seller seller = new Seller();
