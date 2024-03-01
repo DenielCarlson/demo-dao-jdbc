@@ -45,18 +45,34 @@ public class Program {
 			System.out.println(s);
 		}
 		
-		
 		//------------------------------------------------------------------------------------------------------
 		
-		
-		
+
 		System.out.println("============TEST 4 : insert============");
 		
 		Seller newSeller = new Seller(0, "Oliv", "oliver@gmail.com", new Date(2003 - 1900, 3, 19), 2000.0f, new Department(1, null));
 		
-		sellerDao.insert(newSeller);
+		/*sellerDao.insert(newSeller);
 		
 		System.out.println("Inserted! New id = " + newSeller.getId());
+		*/
+		
+		//------------------------------------------------------------------------------------------------------
+		
+
+		System.out.println("============TEST 5 : update============");
+		
+		newSeller.setId(20);
+		newSeller.setName("Marcos");
+		newSeller.setEmail("marcos@gmail.com");
+		newSeller.setBirthDate(new Date(2000 - 1900, 1, 10));
+		newSeller.setBaseSalary(5000.50f);
+		newSeller.setDepartment(new Department(3, null));
+		
+		sellerDao.update(newSeller);
+		
+		System.out.println("Updated!");
+		System.out.println(sellerDao.findById(newSeller.getId()));
 		
 		DataBase.closeConnection();
 		
