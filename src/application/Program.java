@@ -82,7 +82,7 @@ public class Program {
 
 		System.out.println("============TEST 6 : deleteById============");
 			
-		sellerDao.deleteById(2300);
+		sellerDao.deleteById(20);
 			
 		System.out.println("deleted!");
 			
