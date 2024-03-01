@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Date;
 import java.util.List;
 
 import db.DataBase;
@@ -11,6 +12,7 @@ import model.entities.Seller;
 public class Program {
 
 	public static void main(String[] args) {
+		
 		
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
@@ -43,7 +45,21 @@ public class Program {
 			System.out.println(s);
 		}
 		
+		
+		//------------------------------------------------------------------------------------------------------
+		
+		
+		
+		System.out.println("============TEST 4 : insert============");
+		
+		Seller newSeller = new Seller(0, "Oliv", "oliver@gmail.com", new Date(2003 - 1900, 3, 19), 2000.0f, new Department(1, null));
+		
+		sellerDao.insert(newSeller);
+		
+		System.out.println("Inserted! New id = " + newSeller.getId());
+		
 		DataBase.closeConnection();
+		
 
 	}
 
