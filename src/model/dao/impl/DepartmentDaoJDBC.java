@@ -45,8 +45,10 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 				if(rs.next()) {
 					department.setId(rs.getInt(1));
 				}
+				
+				DataBase.closeResultSet(rs);
 			}else {
-				throw new DataBaseException("Unexpected error! Department has no inserted!");
+				throw new SQLException("Unexpected error! Department has no inserted!");
 			}
 			
 			conn.commit();
@@ -71,9 +73,39 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 
 	@Override
 	public void update(Department department) {
-		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
 		
+		try {
+			
+			conn.setAutoCommit(false);
+			
+			ps = conn.prepareStatement("UPDATE department SET Name = ? "
+					+ "WHERE id = ?");
+			
+			ps.setString(1, department.getName());
+			ps.setInt(2, department.getId());
+			
+			ps.executeUpdate();
+			
+			conn.commit();
+			
+		}
+		catch(SQLException e) {
+			
+			try {
+				conn.rollback();
+			}
+			catch(SQLException i) {
+				
+				throw new DataBaseException("Unecpected error! update rolled back!");
+			}
+			throw new DataBaseException(e.getMessage());
+		}
+		finally {
+			DataBase.closeStatement(ps);
+		}
 	}
+	
 
 	@Override
 	public void deleteById(Integer id) {

@@ -16,9 +16,23 @@ public class Program2 {
 		
 		DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
 		
-		departmentDao.insert(department);
+		/*departmentDao.insert(department);
 			
-		System.out.println("inserted! department id = " + department.getId());
+		System.out.println("inserted! department id = " + department.getId());*/
+		
+		//------------------------------------------------------------------------------------------------------
+		
+		System.out.println("============TEST 2 : update============");
+		
+		department.setId(10);
+		department.setName("Desenvolvimento");
+		
+		departmentDao.update(department);
+			
+		System.out.println("updated!");
+		
+		
+		
 		
 			
 		DataBase.closeConnection();
