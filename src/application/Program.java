@@ -69,14 +69,24 @@ public class Program {
 		newSeller.setBaseSalary(5000.50f);
 		newSeller.setDepartment(new Department(3, null));
 		
-		sellerDao.update(newSeller);
+		/*sellerDao.update(newSeller);
 		
 		System.out.println("Updated!");
-		System.out.println(sellerDao.findById(newSeller.getId()));
-		
-		DataBase.closeConnection();
+		System.out.println(sellerDao.findById(newSeller.getId()));*/
 		
 
+	
+	
+		//------------------------------------------------------------------------------------------------------
+	
+
+		System.out.println("============TEST 6 : deleteById============");
+			
+		sellerDao.deleteById(2300);
+			
+		System.out.println("deleted!");
+			
+		DataBase.closeConnection();
 	}
 
 }
