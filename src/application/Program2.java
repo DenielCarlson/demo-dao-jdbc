@@ -31,6 +31,16 @@ public class Program2 {
 			
 		System.out.println("updated!");
 		
+		//------------------------------------------------------------------------------------------------------
+		
+		System.out.println("============TEST 3 : deleteById============");
+				
+		departmentDao.deleteById(16);
+					
+		System.out.println("deleted!");
+				
+				
+		
 		
 		
 		

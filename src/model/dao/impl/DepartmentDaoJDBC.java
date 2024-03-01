@@ -109,7 +109,42 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
+		int rowsAffected;
+		
+		try {
+			
+			conn.setAutoCommit(false);
+			
+			ps = conn.prepareStatement("DELETE FROM department "
+					+ "WHERE id = ?");
+			
+			ps.setInt(1, id);
+			
+			rowsAffected = ps.executeUpdate();
+			
+			if(rowsAffected == 0) {
+				
+				throw new SQLException("Unexpected error! Department has no deleted!");
+			}
+			
+			conn.commit();
+			
+		}
+		catch(SQLException e) {
+			
+			try {
+				conn.rollback();
+			}
+			catch(SQLException i) {
+				
+				throw new DataBaseException("Unecpected error! update rolled back!");
+			}
+			throw new DataBaseException(e.getMessage());
+		}
+		finally {
+			DataBase.closeStatement(ps);
+		}
 		
 	}
 
