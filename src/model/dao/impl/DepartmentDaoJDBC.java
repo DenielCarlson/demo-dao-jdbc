@@ -6,12 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DataBase;
 import db.DataBaseException;
 import model.dao.DepartmentDao;
 import model.entities.Department;
+import model.entities.Seller;
 
 public class DepartmentDaoJDBC implements DepartmentDao{
 
@@ -21,6 +24,10 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		this.conn = conn;
 	}
 	
+	/*
+	 * 
+	 * 
+	 * */
 	
 	@Override
 	public void insert(Department department) {
@@ -69,6 +76,11 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		}
 		
 	}
+	
+	/*
+	 * 
+	 * 
+	 * */
 
 	@Override
 	public void update(Department department) {
@@ -105,6 +117,10 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		}
 	}
 	
+	/*
+	 * 
+	 * 
+	 * */
 
 	@Override
 	public void deleteById(Integer id) {
@@ -147,10 +163,10 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		
 	}
 	
-	
-	
-	
-	
+	/*
+	 * 
+	 * 
+	 * */
 
 	@Override
 	public Department findById(Integer id) {
@@ -181,9 +197,10 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		return department;
 	}
 	
-	
-	
-	
+	/*
+	 * 
+	 * 
+	 * */
 
 	@Override
 	public List<Department> findAll() {
@@ -218,8 +235,10 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		return departments;
 	}
 	
-	
-		
+	/*
+	 * 
+	 * 
+	 * */
 	
 	private Department instatiateDepartment(ResultSet rs) {
 		Department department = null;

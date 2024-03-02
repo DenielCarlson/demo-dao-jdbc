@@ -26,11 +26,11 @@ public class Program {
 		
 		List<Seller> sellers = sellerDao.findByDepartment(new Department(1, null));
 		
-		System.out.println("============TEST 2 : findByDepartment============");
+		System.out.println("============TEST 2 : findByDepartment(Department department)============");
 		
-		for(Seller s : sellers) {
+		/*for(Seller s : sellers) {
 			System.out.println(s);
-		}
+		}*/
 		
 		System.out.println();
 		
@@ -40,10 +40,10 @@ public class Program {
 		
 		System.out.println("============TEST 3 : findAll============");
 		
-		for(Seller s : sellers) {
+		/*for(Seller s : sellers) {
 			
 			System.out.println(s);
-		}
+		}*/
 		
 		//------------------------------------------------------------------------------------------------------
 		
@@ -82,11 +82,36 @@ public class Program {
 
 		System.out.println("============TEST 6 : deleteById============");
 			
-		sellerDao.deleteById(20);
+		/*sellerDao.deleteById(20);*/
 			
 		System.out.println("deleted!");
-			
+	
+		//------------------------------------------------------------------------------------------------------
+	
+		System.out.println("============TEST 7 : findByDepartment(Integer departmentId)============");
+	
+		sellers = sellerDao.findByDepartment(3);
+		
+		for(Seller s : sellers) {
+			System.out.println(s);
+		}
+	
+		System.out.println();
+		
+		//------------------------------------------------------------------------------------------------------
+	
+		System.out.println("============TEST 8 : findByDepartment(String Name)============");
+
+		sellers = sellerDao.findByDepartment("Computers");
+	
+		for(Seller s : sellers) {
+			System.out.println(s);
+		}
+
+		System.out.println();
+	
 		DataBase.closeConnection();
+	
 	}
 
 }

@@ -25,6 +25,11 @@ public class SellerDaoJDBC implements SellerDao{
 		this.conn = conn;
 	}
 
+	/*
+	 * 
+	 * 
+	 * */
+	
 	@Override
 	public void insert(Seller seller) {
 		PreparedStatement ps = null;
@@ -69,7 +74,12 @@ public class SellerDaoJDBC implements SellerDao{
 		}
 		
 	}
-
+	
+	/*
+	 * 
+	 * 
+	 * */
+	
 	@Override
 	public void update(Seller seller) {
 		PreparedStatement ps = null;
@@ -96,6 +106,11 @@ public class SellerDaoJDBC implements SellerDao{
 			DataBase.closeStatement(ps);
 		}
 	}
+	
+	/*
+	 * 
+	 * 
+	 * */
 
 	@Override
 	public void deleteById(Integer id) {
@@ -121,6 +136,11 @@ public class SellerDaoJDBC implements SellerDao{
 		}
 		
 	}
+	
+	/*
+	 * 
+	 * 
+	 * */
 	
 	
 	// Busca um Seller no banco de dados pelo parametro do tipo Integer e retorna o Seller que possui esse Id
@@ -160,6 +180,11 @@ public class SellerDaoJDBC implements SellerDao{
 		}
 	}
 	
+	/*
+	 * 
+	 * 
+	 * */
+	
 	
 	//Busca um Seller no Banco de dados pelo parametro de um objeto do tipo Department e retorna uma lista do Sellers encontrados
 	@Override
@@ -179,6 +204,114 @@ public class SellerDaoJDBC implements SellerDao{
 					+ "ORDER BY seller.Name ASC");
 			
 			ps.setInt(1, department.getId());
+			
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				Department dep = map.get(rs.getInt("DepartmentId"));
+				
+				if(map.get(rs.getObject("DepartmentId")) == null) {
+					
+					dep = this.instatiateDepartment(rs);
+					
+					map.put(dep.getId(), dep);
+				}
+				
+				Seller seller = this.instantiateSeller(rs, dep);
+				
+				sellerList.add(seller);
+			}
+			
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage()); 
+		}
+		finally {
+			DataBase.closeStatement(ps);
+			DataBase.closeResultSet(rs);
+			
+		}
+		
+		return sellerList;
+	}
+
+	/*
+	 * 
+	 * 
+	 * */
+
+	@Override
+	public List<Seller> findByDepartment(Integer departmentId) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		List<Seller> sellerList = new ArrayList<Seller>();
+		Map<Integer, Department> map = new HashMap<Integer, Department>();
+		
+		try {
+			
+			ps = conn.prepareStatement("SELECT seller.*, department.Name AS DepName FROM seller "
+					+ "JOIN department ON seller.DepartmentId = department.Id "
+					+ "Where department.Id = ? "
+					+ "ORDER BY seller.Name ASC");
+			
+			ps.setInt(1, departmentId);
+			
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				Department dep = map.get(rs.getInt("DepartmentId"));
+				
+				if(map.get(rs.getObject("DepartmentId")) == null) {
+					
+					dep = this.instatiateDepartment(rs);
+					
+					map.put(dep.getId(), dep);
+				}
+				
+				Seller seller = this.instantiateSeller(rs, dep);
+				
+				sellerList.add(seller);
+			}
+			
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage()); 
+		}
+		finally {
+			DataBase.closeStatement(ps);
+			DataBase.closeResultSet(rs);
+			
+		}
+		
+		return sellerList;
+	}
+	
+	/*
+	 * 
+	 * 
+	 * */
+
+	@Override
+	public List<Seller> findByDepartment(String departmentName) {
+	
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		List<Seller> sellerList = new ArrayList<Seller>();
+		Map<Integer, Department> map = new HashMap<Integer, Department>();
+		
+		try {
+			
+			ps = conn.prepareStatement("SELECT seller.*, department.Name AS DepName FROM seller "
+					+ "JOIN department ON seller.DepartmentId = department.Id "
+					+ "Where department.Name = ? "
+					+ "ORDER BY seller.Name ASC");
+			
+			ps.setString(1, departmentName);
 			
 			rs = ps.executeQuery();
 			
@@ -257,6 +390,11 @@ public class SellerDaoJDBC implements SellerDao{
 		return sellerList;
 	}
 	
+	/*
+	 * 
+	 * 
+	 * */
+	
 	//Responsável por intanciar um objeto do tipo Department recebendo um ResultSet de parametro 
 	private Department instatiateDepartment(ResultSet rs) throws SQLException{
 		
@@ -266,6 +404,11 @@ public class SellerDaoJDBC implements SellerDao{
 		
 		return department;
 	}
+	
+	/*
+	 * 
+	 * 
+	 * */
 	
 	//Responsável por intanciar um objeto do tipo Seller recebendo um ResultSet de paramentro
 	private Seller instantiateSeller(ResultSet rs, Department department) throws SQLException{
