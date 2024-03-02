@@ -1,5 +1,7 @@
 package application;
 
+import java.util.List;
+
 import db.DataBase;
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
@@ -46,14 +48,18 @@ public class Program2 {
 		Department departmentReturned = departmentDao.findById(15);
 					
 		System.out.println(departmentReturned);
+		
+		//------------------------------------------------------------------------------------------------------
+		
+		System.out.println("============TEST 5 : findAll============");
+		
+		List<Department> departments = departmentDao.findAll();
+		
+		for(Department departmentElement : departments) {
+			System.out.println(departmentElement);
+		}
 				
-				
-		
-		
-		
-		
-			
+					
 		DataBase.closeConnection();
 	}
-
 }

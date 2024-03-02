@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DataBase;
@@ -145,6 +146,11 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		}
 		
 	}
+	
+	
+	
+	
+	
 
 	@Override
 	public Department findById(Integer id) {
@@ -162,28 +168,65 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		    
 		    rs = ps.executeQuery();
 			
-			department = this.instatiateDepartment(rs);
+			if(rs.next()) department = this.instatiateDepartment(rs);
 		}
 		catch(SQLException e) {
 			throw new DataBaseException(e.getMessage());
 		}
 		finally {
 			DataBase.closeStatement(ps);
-			DataBase.closeResultSet(null);
+			DataBase.closeResultSet(rs);
 		}
 		
 		return department;
 	}
 	
+	
+	
+	
+
+	@Override
+	public List<Department> findAll() {
+		
+		Statement st = null;
+		ResultSet rs = null;
+		
+		List<Department> departments = new ArrayList<Department>();
+		
+		try {
+			
+			st = conn.createStatement();
+			
+		
+		    
+		    rs = st.executeQuery("SELECT * FROM department");
+			
+		    while(rs.next()) {
+		    	
+		    	departments.add(this.instatiateDepartment(rs));
+		    }
+			
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage());
+		}
+		finally {
+			DataBase.closeStatement(st);
+			DataBase.closeResultSet(rs);
+		}
+		
+		return departments;
+	}
+	
+	
+		
+	
 	private Department instatiateDepartment(ResultSet rs) {
 		Department department = null;
 		
 		try {
-			
-			if(rs.next()) {
 				
 				department = new Department(rs.getInt(1), rs.getString(2));
-			}
 			
 		}
 		catch(SQLException e) {
@@ -191,12 +234,6 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		}
 		
 		return department;
-	}
-
-	@Override
-	public List<Department> findAll() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
