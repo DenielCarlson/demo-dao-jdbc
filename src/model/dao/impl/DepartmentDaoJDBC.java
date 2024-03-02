@@ -167,6 +167,52 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 	 * 
 	 * 
 	 * */
+	
+	@Override
+	public void deleteByName(String departmentName) {
+		
+		PreparedStatement ps = null;
+		int rowsAffected;
+		
+		try {
+			
+			conn.setAutoCommit(false);
+			
+			ps = conn.prepareStatement("DELETE FROM department "
+					+ "WHERE Name = ?");
+			
+			ps.setString(1, departmentName);
+			
+			rowsAffected = ps.executeUpdate();
+			
+			if(rowsAffected == 0) {
+				
+				throw new SQLException("Unexpected error! Department has no deleted!");
+			}
+			
+			conn.commit();
+			
+		}
+		catch(SQLException e) {
+			
+			try {
+				conn.rollback();
+			}
+			catch(SQLException i) {
+				
+				throw new DataBaseException("Unecpected error! update rolled back!");
+			}
+			throw new DataBaseException(e.getMessage());
+		}
+		finally {
+			DataBase.closeStatement(ps);
+		}
+	}
+	
+	/*
+	 * 
+	 * 
+	 * */
 
 	@Override
 	public Department findById(Integer id) {
@@ -196,6 +242,41 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		
 		return department;
 	}
+	
+	/*
+	 * 
+	 * 
+	 * */
+	
+	@Override
+	public Department findbyName(String departmentName) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		Department department =  null;
+		
+		try {
+			
+			ps = conn.prepareStatement("SELECT * FROM department "
+					+ "WHERE Name = ?");
+			
+		    ps.setString(1, departmentName);
+		    
+		    rs = ps.executeQuery();
+			
+			if(rs.next()) department = this.instatiateDepartment(rs);
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage());
+		}
+		finally {
+			DataBase.closeStatement(ps);
+			DataBase.closeResultSet(rs);
+		}
+		
+		return department;
+	}
+	
 	
 	/*
 	 * 

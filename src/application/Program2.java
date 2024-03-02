@@ -26,8 +26,8 @@ public class Program2 {
 		
 		System.out.println("============TEST 2 : update============");
 		
-		department.setId(10);
-		department.setName("Desenvolvimento");
+		department.setId(15);
+		department.setName("Elétrica");
 		
 		departmentDao.update(department);
 			
@@ -41,13 +41,13 @@ public class Program2 {
 					
 		System.out.println("deleted!");*/
 		
-	//------------------------------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------------------------------
 		
 		System.out.println("============TEST 4 : findById============");
 				
-		Department departmentReturned = departmentDao.findById(15);
+		/*Department departmentReturned = departmentDao.findById(15);
 					
-		System.out.println(departmentReturned);
+		System.out.println(departmentReturned);*/
 		
 		//------------------------------------------------------------------------------------------------------
 		
@@ -55,11 +55,25 @@ public class Program2 {
 		
 		List<Department> departments = departmentDao.findAll();
 		
-		for(Department departmentElement : departments) {
+		/*for(Department departmentElement : departments) {
 			System.out.println(departmentElement);
-		}
-				
-					
+		}*/
+		
+		//------------------------------------------------------------------------------------------------------
+		
+		System.out.println("============TEST 6 : deleteByName============");
+						
+		departmentDao.findbyName("Elétrica");
+		
+		//------------------------------------------------------------------------------------------------------
+		
+		System.out.println("============TEST 7 : findByName============");
+						
+		Department departmentReturned = departmentDao.findbyName("Desenvolvimento");
+							
+		System.out.println(departmentReturned);
+							
+						
 		DataBase.closeConnection();
 	}
 }
