@@ -35,9 +35,17 @@ public class Program2 {
 		
 		System.out.println("============TEST 3 : deleteById============");
 				
-		departmentDao.deleteById(16);
+		/*departmentDao.deleteById(16);
 					
-		System.out.println("deleted!");
+		System.out.println("deleted!");*/
+		
+	//------------------------------------------------------------------------------------------------------
+		
+		System.out.println("============TEST 4 : findById============");
+				
+		Department departmentReturned = departmentDao.findById(15);
+					
+		System.out.println(departmentReturned);
 				
 				
 		

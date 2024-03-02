@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping;
-
 import db.DataBase;
 import db.DataBaseException;
 import model.dao.DepartmentDao;
@@ -150,8 +148,49 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 
 	@Override
 	public Department findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		Department department =  null;
+		
+		try {
+			
+			ps = conn.prepareStatement("SELECT * FROM department "
+					+ "WHERE id = ?");
+			
+		    ps.setInt(1, id);
+		    
+		    rs = ps.executeQuery();
+			
+			department = this.instatiateDepartment(rs);
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage());
+		}
+		finally {
+			DataBase.closeStatement(ps);
+			DataBase.closeResultSet(null);
+		}
+		
+		return department;
+	}
+	
+	private Department instatiateDepartment(ResultSet rs) {
+		Department department = null;
+		
+		try {
+			
+			if(rs.next()) {
+				
+				department = new Department(rs.getInt(1), rs.getString(2));
+			}
+			
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage());
+		}
+		
+		return department;
 	}
 
 	@Override
